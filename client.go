@@ -80,7 +80,7 @@ func flushTable(mem_table map[string][3]string, data string, collect string, cli
 	for key, values := range mem_table {
 		document := bson.M{
 			"key":   key,
-			"value": bson.A{values[0], values[1], values[2]}, // individual elements in bson.A
+			"value": bson.A{values[0], values[1], values[2]}, 
 		}
 
 		collection := client.Database(data).Collection(collect)
@@ -95,11 +95,11 @@ func flushTable(mem_table map[string][3]string, data string, collect string, cli
 func handleRequests(state *AppState, client *mongo.Client) {
 	myRouter := mux.NewRouter().StrictSlash(true)
 
-	myRouter.HandleFunc("/yeah", func(w http.ResponseWriter, r *http.Request) {
+	myRouter.HandleFunc("/send", func(w http.ResponseWriter, r *http.Request) {
 		storePair(w, r, state, client)
 	}).Methods("POST")
 
-	log.Fatal(http.ListenAndServe(":8081", myRouter))
+	log.Fatal(http.ListenAndServe("yourip", myRouter))
 }
 
 func main() {
